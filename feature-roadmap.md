@@ -9,15 +9,15 @@ A practical, tickable roadmap for implementing high‑fidelity merged highlighti
 - [x] Align TypeScript config and lint rules
 
 ## Phase 1 — Configuration & Manifest
-- [ ] Add config: `goTemplate.baseLanguageDirective.enabled` (default: true)
-- [ ] Add config: `goTemplate.baseLanguageDetection.enabled` (default: true)
-- [ ] Add config: `goTemplate.semantic.refreshDebounceMs` (default: 300)
+- [x] Add config: `goTemplate.baseLanguageDirective.enabled` (default: true)
+- [x] Add config: `goTemplate.baseLanguageDetection.enabled` (default: true)
+- [x] Add config: `goTemplate.semantic.refreshDebounceMs` (default: 300)
 - [ ] (Optional) Add config: `goTemplate.maxFileSizeSemantic`
 - [ ] (Optional) Add config: `goTemplate.heuristic.languages`
 - [ ] (Optional) Add config: `goTemplate.templateTokenizer.mode` (simple | advanced)
-- [ ] Add semantic token modifiers: `template`, `base`
-- [ ] Add/extend semantic token types: `keyword`, `variable`, `string`, `number`, `operator`, `tag`, `attribute`, `function`, `comment`, `punctuation`, `text`
-- [ ] Map token scopes (`semanticTokenScopes`) to reasonable TextMate scopes
+- [x] Add semantic token modifiers: `template`, `base`
+- [x] Add/extend semantic token types: `keyword`, `variable`, `string`, `number`, `operator`, `tag`, `attribute`, `function`, `comment`, `punctuation`, `text`
+- [x] Map token scopes (`semanticTokenScopes`) to reasonable TextMate scopes
 
 ## Phase 2 — Grammar Infrastructure
 - [ ] Add dependencies: `vscode-textmate`, `onigasm`

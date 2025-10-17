@@ -165,6 +165,21 @@
           ],
           "placeholder": [
             "constant.other.placeholder.go-template"
+          ],
+          "tag": [
+            "entity.name.tag"
+          ],
+          "attribute": [
+            "entity.other.attribute-name"
+          ],
+          "number": [
+            "constant.numeric"
+          ],
+          "punctuation": [
+            "punctuation"
+          ],
+          "text": [
+            "text"
           ]
         }
       }
@@ -223,6 +238,41 @@
         "id": "placeholder",
         "superType": "string",
         "description": "Printf-style placeholder"
+      },
+      {
+        "id": "tag",
+        "superType": "type",
+        "description": "HTML/XML tag name"
+      },
+      {
+        "id": "attribute",
+        "superType": "property",
+        "description": "HTML/XML attribute name"
+      },
+      {
+        "id": "number",
+        "superType": "number",
+        "description": "Numeric literal"
+      },
+      {
+        "id": "punctuation",
+        "superType": "operator",
+        "description": "Punctuation characters"
+      },
+      {
+        "id": "text",
+        "superType": "string",
+        "description": "Plain text content"
+      }
+    ],
+    "semanticTokenModifiers": [
+      {
+        "id": "template",
+        "description": "Token originates from Go template syntax"
+      },
+      {
+        "id": "base",
+        "description": "Token originates from base language syntax"
       }
     ],
     "configuration": {
@@ -241,6 +291,21 @@
             "type": "string"
           },
           "markdownDescription": "A file glob pattern to match file paths against. This can either be a glob pattern string (like `**/*.yaml` or `**/*.{yaml,yml}`).\nGlob patterns can have the following syntax:\n\n* `*` to match one or more characters in a path segment\n* `?` to match on one character in a path segment\n* `**` to match any number of path segments, including none\n* `{}` to group conditions (e.g. `**​/*.{ts,js}` matches all TypeScript and JavaScript files)\n* `[]` to declare a range of characters to match in a path segment (e.g., `example.[0-9]` to match on `example.0`, `example.1`, …)\n* `[!...]` to negate a range of characters to match in a path segment (e.g., `example.[!0-9]` to match on `example.a`, `example.b`, but not `example.0`)\n\nNote: a backslash (`\\`) is not valid within a glob pattern."
+        },
+        "go-template.baseLanguageDirective.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Parse top-of-file directive for base language override (e.g. {{/*meta: base=html*/}})."
+        },
+        "go-template.baseLanguageDetection.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable heuristic detection of base language if no directive is present."
+        },
+        "go-template.semantic.refreshDebounceMs": {
+          "type": "number",
+          "default": 300,
+          "description": "Debounce interval (milliseconds) for status bar updates and semantic token refresh."
         }
       }
     },

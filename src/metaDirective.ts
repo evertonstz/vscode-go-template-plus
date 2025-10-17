@@ -23,6 +23,7 @@ export function parseMetaDirective(line: string): MetaDirective | null {
   const content = match[1];
   const directive: MetaDirective = {};
 
+  // Split by semicolon, comma, or whitespace
   const tokens = content.split(/[;,\s]+/).filter((t) => t.length > 0);
 
   for (const token of tokens) {

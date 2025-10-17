@@ -12,7 +12,6 @@ export interface BaseLanguageDetection {
  * Only supports {{/ *meta: base=html* /}} directive detection for now
  */
 export function detectBaseLanguage(text: string, directiveEnabled = true): BaseLanguageDetection {
-  // Try directive (if enabled)
   if (directiveEnabled) {
     const directive = parseDirectiveFromText(text);
     if (directive?.base) {

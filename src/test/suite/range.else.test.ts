@@ -14,7 +14,7 @@ suite('Parse Range-Else', () => {
     provider = new GoTemplateSemanticTokensProvider();
   });
 
-  teardown(async () => {
+  suiteTeardown(async () => {
     await vscode.commands.executeCommand('workbench.action.closeAllEditors');
   });
 

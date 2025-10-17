@@ -17,7 +17,9 @@ export default class MarkdownGoTemplateSemanticTokensProvider extends GoTemplate
       }
       const subSource = source.substring(matcher.lastIndex, endMatch.index);
       const lineOffset = source.substring(0, matcher.lastIndex).split(eol).length - 1;
-      result.push(...super.parseSource(subSource, eol).map(t => ({ ...t, line: t.line + lineOffset })));
+      result.push(
+        ...super.parseSource(subSource, eol).map((t) => ({ ...t, line: t.line + lineOffset })),
+      );
     }
 
     return result;

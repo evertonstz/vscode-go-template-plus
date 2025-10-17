@@ -1,6 +1,17 @@
 import TokenType from './tokenType';
 
-const control = ['if', 'else', 'range', 'template', 'with', 'end', 'nil', 'with', 'define', 'block'];
+const control = [
+  'if',
+  'else',
+  'range',
+  'template',
+  'with',
+  'end',
+  'nil',
+  'with',
+  'define',
+  'block',
+];
 // prettier-ignore
 const builtin = ['and', 'call', 'html', 'index', 'slice', 'js', 'len', 'not', 'or', 'print', 'printf', 'println', 'urlquery', 'eq', 'ne', 'lt', 'le', 'gt', 'ge'];
 

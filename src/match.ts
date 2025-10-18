@@ -29,6 +29,7 @@ export default new RegExp(
     '\\.\\w*', // property
     `\\b(${control.join('|')})\\b`, // control
     `\\b(${builtin.join('|')})\\b`, // builtin
+    '-?\\d+\\.\\d+|-?\\d+', // number (float or integer)
   ].join('|')})`,
   'g',
 );
@@ -61,6 +62,8 @@ export const matchType = (m: RegExpExecArray): TokenType | undefined => {
     return TokenType.control;
   } else if (builtin.includes(m[0])) {
     return TokenType.builtin;
+  } else if (/^-?\d+\.?\d*$/.test(m[1])) {
+    return TokenType.number;
   }
   return;
 };

@@ -312,11 +312,6 @@
           "default": true,
           "description": "Parse top-of-file directive for base language override (e.g. {{/*meta: base=html*/}})."
         },
-        "go-template.baseLanguageDetection.enabled": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable heuristic detection of base language if no directive is present."
-        },
         "go-template.semantic.refreshDebounceMs": {
           "type": "number",
           "default": 300,

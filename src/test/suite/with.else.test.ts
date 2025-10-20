@@ -23,9 +23,6 @@ suite('Parse With', () => {
       `,
     });
     const tokens = await provider.provideDocumentSemanticTokens(doc);
-    // debug
-    // eslint-disable-next-line no-console
-    console.log('WITH-END TOKENS', tokens ? Array.from(tokens.data) : null);
     expect(tokens?.data).to.be.Uint32Array();
     // prettier-ignore
     expect(tokens?.data).to.be.equalTo([
@@ -54,9 +51,6 @@ suite('Parse With', () => {
       `,
     });
     const tokens = await provider.provideDocumentSemanticTokens(doc);
-    // debug
-    // eslint-disable-next-line no-console
-    console.log('WITH-ELSE TOKENS', tokens ? Array.from(tokens.data) : null);
     expect(tokens?.data).to.be.Uint32Array();
     // prettier-ignore
     expect(tokens?.data).to.be.equalTo([

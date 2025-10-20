@@ -38,21 +38,25 @@ export function buildVirtualBuffer(text: string, spans: TemplateSpan[]): string 
     return text;
   }
 
-  let result = '';
+  const pieces: string[] = [];
   let lastEnd = 0;
 
   for (const span of spans) {
     // Add text before the span
-    result += text.substring(lastEnd, span.start);
+    if (span.start > lastEnd) {
+      pieces.push(text.substring(lastEnd, span.start));
+    }
     // Replace span with spaces of equal length
-    result += ' '.repeat(span.end - span.start);
+    pieces.push(' '.repeat(span.end - span.start));
     lastEnd = span.end;
   }
 
   // Add remaining text after last span
-  result += text.substring(lastEnd);
+  if (lastEnd < text.length) {
+    pieces.push(text.substring(lastEnd));
+  }
 
-  return result;
+  return pieces.join('');
 }
 
 /**
@@ -67,6 +71,36 @@ export function isInsideTemplateSpan(offset: number, spans: TemplateSpan[]): boo
  */
 export function getSpanAtOffset(offset: number, spans: TemplateSpan[]): TemplateSpan | null {
   return spans.find((span) => offset >= span.start && offset < span.end) || null;
+}
+
+/**
+ * Build cumulative line offset array for fast absolute position lookups
+ * lineOffsets[i] = absolute offset where line i starts
+ * @param text Document text
+ * @returns Array where index = line number, value = start offset of that line
+ */
+export function buildLineOffsets(text: string): number[] {
+  const offsets: number[] = [0]; // Line 0 starts at offset 0
+  for (let i = 0; i < text.length; i++) {
+    if (text[i] === '\n') {
+      offsets.push(i + 1); // Next line starts after the newline
+    }
+  }
+  return offsets;
+}
+
+/**
+ * Convert line and column to absolute offset using precomputed offsets
+ * @param lineOffsets Precomputed line offsets from buildLineOffsets
+ * @param line 0-based line number
+ * @param column 0-based column number
+ * @returns Absolute character offset
+ */
+export function lineColumnToAbsolute(lineOffsets: number[], line: number, column: number): number {
+  if (line >= lineOffsets.length) {
+    return lineOffsets[lineOffsets.length - 1] || 0;
+  }
+  return lineOffsets[line] + column;
 }
 
 /**

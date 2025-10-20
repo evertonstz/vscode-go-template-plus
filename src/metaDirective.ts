@@ -53,6 +53,8 @@ export function getFirstLine(text: string): string {
  * @returns Parsed directive or null
  */
 export function parseDirectiveFromText(text: string): MetaDirective | null {
-  const firstLine = getFirstLine(text);
-  return parseMetaDirective(firstLine);
+  // Support directive on line 1, or on line 2 when line 1 is a shebang (#!/...)
+  const lines = text.split(/\r?\n/);
+  const candidate = lines.length > 0 && lines[0].startsWith('#!') ? lines[1] || '' : lines[0] || '';
+  return parseMetaDirective(candidate);
 }

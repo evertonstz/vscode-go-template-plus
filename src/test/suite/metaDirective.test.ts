@@ -79,5 +79,10 @@ suite('Meta Directive Parser', () => {
       const text = '<html>\n  <body></body>\n</html>';
       expect(parseDirectiveFromText(text)).to.be.null;
     });
+
+    test('Directive allowed on line 2 when line 1 is shebang', () => {
+      const text = '#!/bin/bash\n{{/*meta: base=shellscript*/}}\necho ok';
+      expect(parseDirectiveFromText(text)).to.deep.equal({ base: 'shellscript' });
+    });
   });
 });

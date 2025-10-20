@@ -47,7 +47,7 @@ Advanced Go Template syntax highlighting with **base language detection** and **
 
 ### New Features (Go Template+)
 
-- **Merged Highlighting**: High-fidelity syntax highlighting for **both** Go template constructs and the underlying base language (HTML, YAML, JSON, Markdown, Shell, SQL, Plaintext) simultaneously, instead of just template syntax.
+- **Merged Highlighting**: High-fidelity syntax highlighting for **both** Go template constructs and the underlying base language (HTML, XML, JavaScript, TypeScript, YAML, TOML, JSON, Dockerfile, Markdown, Shell, SQL, Plaintext) simultaneously, instead of just template syntax.
 
 - **Meta Directive for Base Language**: Explicitly declare the base language with a top-of-file directive:
   ```go
@@ -72,7 +72,7 @@ Advanced Go Template syntax highlighting with **base language detection** and **
 
 - **Numeric Constants**: Support for integer and float literals in Go templates (`-123`, `3.14`, etc.).
 
-- **Vendored Language Grammars**: Includes TextMate grammars for HTML, YAML, JSON, Markdown, Shellscript, SQL, and Plaintext—no external dependencies required.
+- **Vendored Language Grammars**: Includes TextMate grammars for HTML, XML, JavaScript, TypeScript, YAML, TOML, JSON, Dockerfile, Markdown, Shellscript, SQL, and Plaintext—no external dependencies required.
 
 ## Configuration
 

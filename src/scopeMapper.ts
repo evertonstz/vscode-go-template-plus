@@ -29,6 +29,26 @@ export function mapScopeToSemanticToken(scopes: string[]): SemanticTokenInfo | n
     return { type: 'property', modifiers: ['base'] };
   }
 
+  // JavaScript/TypeScript Classes and Types
+  if (
+    scopeString.includes('entity.name.type.class') ||
+    scopeString.includes('entity.name.type.interface')
+  ) {
+    return { type: 'class', modifiers: ['base'] };
+  }
+  if (
+    scopeString.includes('entity.name.type.module') ||
+    scopeString.includes('entity.name.type.namespace')
+  ) {
+    return { type: 'namespace', modifiers: ['base'] };
+  }
+  if (scopeString.includes('support.class') || scopeString.includes('support.type')) {
+    return { type: 'class', modifiers: ['base'] };
+  }
+  if (scopeString.includes('variable.other.constant')) {
+    return { type: 'variable', modifiers: ['base', 'readonly'] };
+  }
+
   // Strings
   if (
     scopeString.includes('string.quoted') ||

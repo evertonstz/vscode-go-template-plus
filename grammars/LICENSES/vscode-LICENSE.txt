@@ -1,6 +1,10 @@
 The following grammar files are sourced from microsoft/vscode:
 - html.tmLanguage.json
+- xml.tmLanguage.json
+- javascript.tmLanguage.json
+- typescript.tmLanguage.json
 - json.tmLanguage.json
+- dockerfile.tmLanguage.json
 - markdown.tmLanguage.json
 - shellscript.tmLanguage.json
 - sql.tmLanguage.json

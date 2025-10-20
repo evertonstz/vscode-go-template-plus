@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import GoTemplateSemanticTokensProvider, {
-  goTemplateLegend,
-} from './GoTemplateSemanticTokensProvider';
+import { goTemplateLegend } from './GoTemplateSemanticTokensProvider';
 import MarkdownGoTemplateSemanticTokensProvider from './MarkdownGoTemplateSemanticTokensProvider';
+import { initializeOnigLib } from './grammarLoader';
+import { createCombinedLegend, MergedSemanticTokensProvider } from './semanticProvider';
 
 const CONFIG_SECTION = 'go-template';
 
@@ -24,12 +24,14 @@ const registerProvider = (context: vscode.ExtensionContext, selector: vscode.Doc
     disposable.dispose();
   }
 
+  const combinedLegend = createCombinedLegend();
+
   if (selector.length > 0) {
     context.subscriptions.push(
       vscode.languages.registerDocumentSemanticTokensProvider(
         selector,
-        new GoTemplateSemanticTokensProvider(),
-        goTemplateLegend,
+        new MergedSemanticTokensProvider(context),
+        combinedLegend,
       ),
     );
   }
@@ -43,7 +45,20 @@ const registerProvider = (context: vscode.ExtensionContext, selector: vscode.Doc
   );
 };
 
-export const activate = (context: vscode.ExtensionContext): void => {
+export const activate = async (context: vscode.ExtensionContext): Promise<void> => {
+  // Initialize Oniguruma WASM
+  try {
+    await initializeOnigLib(context);
+  } catch (error) {
+    console.error(
+      'Failed to initialize Oniguruma WASM, falling back to template-only mode:',
+      error,
+    );
+    vscode.window.showWarningMessage(
+      'Go Template+: Failed to load base language support. Only template highlighting available.',
+    );
+  }
+
   const { languages, patterns } = getConfig();
   registerProvider(context, [...languages, ...patterns]);
 

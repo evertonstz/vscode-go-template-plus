@@ -1,18 +1,18 @@
 # Go Template Syntax Highlight Support for VSCode
 
-[![Launched](https://img.shields.io/badge/VSCode--Go--Template-launched-brightgreen.svg?logo=visual-studio-code)](https://github.com/jinliming2/vscode-go-template)
-[![GitHub license](https://img.shields.io/github/license/jinliming2/vscode-go-template.svg)](https://raw.githubusercontent.com/jinliming2/vscode-go-template/master/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/jinliming2/vscode-go-template.svg)](https://github.com/jinliming2/vscode-go-template/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/jinliming2/vscode-go-template.svg)](https://github.com/jinliming2/vscode-go-template/network)
-[![GitHub issues](https://img.shields.io/github/issues/jinliming2/vscode-go-template.svg)](https://github.com/jinliming2/vscode-go-template/issues)
-[![Coverage Status](https://coveralls.io/repos/github/jinliming2/vscode-go-template/badge.svg?branch=master)](https://coveralls.io/github/jinliming2/vscode-go-template?branch=master)
+[![Launched](https://img.shields.io/badge/VSCode--Go--Template-launched-brightgreen.svg?logo=visual-studio-code)](https://github.com/evertonstz/vscode-go-template-plus)
+[![GitHub license](https://img.shields.io/github/license/evertonstz/vscode-go-template-plus.svg)](https://raw.githubusercontent.com/evertonstz/vscode-go-template-plus/master/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/evertonstz/vscode-go-template-plus.svg)](https://github.com/evertonstz/vscode-go-template-plus/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/evertonstz/vscode-go-template-plus.svg)](https://github.com/evertonstz/vscode-go-template-plus/network)
+[![GitHub issues](https://img.shields.io/github/issues/evertonstz/vscode-go-template-plus.svg)](https://github.com/evertonstz/vscode-go-template-plus/issues)
+[![Coverage Status](https://coveralls.io/repos/github/evertonstz/vscode-go-template-plus/badge.svg?branch=master)](https://coveralls.io/github/evertonstz/vscode-go-template-plus?branch=master)
 
 Go Template Syntax Highlight Support for VSCode.
 
 ## Release
 
-- **[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=jinliming2.vscode-go-template) / Recommend**
-- [GitHub Release](https://github.com/jinliming2/vscode-go-template/releases)
+- **[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=evertonstz.vscode-go-template-plus) / Recommend**
+- [GitHub Release](https://github.com/evertonstz/vscode-go-template-plus/releases)
 
 ## Features
 

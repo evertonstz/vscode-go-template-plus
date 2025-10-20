@@ -15,7 +15,7 @@ const main = async () => {
     const extensionTestsPath = path.resolve(__dirname, `.${path.sep}suite${path.sep}index`);
 
     // Create isolated directories to ensure no user-installed extensions interfere
-    const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'vscode-go-template-plus-'));
+    const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'vscode-go-template-plus-plus-'));
     const extensionsDir = path.join(tmpRoot, 'extensions-empty');
     const userDataDir = path.join(tmpRoot, 'user-data');
     fs.mkdirSync(extensionsDir, { recursive: true });

@@ -1,18 +1,18 @@
 {
-  "name": "vscode-go-template",
+  "name": "vscode-go-template-plus",
   "displayName": "Go Template Support",
   "description": "Syntax highlight support for Go text/template and html/template",
   "version": "0.2.1",
-  "publisher": "jinliming2",
+  "publisher": "evertonstz",
   "license": "MIT",
-  "homepage": "https://github.com/jinliming2/vscode-go-template",
+  "homepage": "https://github.com/evertonstz/vscode-go-template-plus",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jinliming2/vscode-go-template.git"
+    "url": "https://github.com/evertonstz/vscode-go-template-plus.git"
   },
   "bugs": {
-    "url": "https://github.com/jinliming2/vscode-go-template/issues",
-    "email": "jinliming2@gmail.com"
+    "url": "https://github.com/evertonstz/vscode-go-template-plus/issues",
+    "email": "evertonjcorreia@gmail.com"
   },
   "engines": {
     "vscode": "^1.44.0"

@@ -32,7 +32,7 @@ suite('Merged Semantic Provider', () => {
 
     suiteSetup(async () => {
       // Get extension context from vscode.extensions API
-      const ext = vscode.extensions.getExtension('jinliming2.vscode-go-template');
+      const ext = vscode.extensions.getExtension('evertonstz.vscode-go-template-plus');
       if (!ext) {
         throw new Error('Extension not found');
       }

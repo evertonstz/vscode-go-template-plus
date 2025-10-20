@@ -1,6 +1,6 @@
 {
   "name": "vscode-go-template-plus",
-  "displayName": "Go Template Support",
+  "displayName": "Go Template (Plus)",
   "description": "Syntax highlight support for Go text/template and html/template",
   "version": "0.2.1",
   "publisher": "evertonstz",

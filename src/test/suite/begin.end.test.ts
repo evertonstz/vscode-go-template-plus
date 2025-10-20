@@ -10,12 +10,7 @@ suite('Parse Begin and End', () => {
   let provider: GoTemplateSemanticTokensProvider;
 
   suiteSetup(async () => {
-    await vscode.commands.executeCommand('workbench.action.closeAllEditors');
     provider = new GoTemplateSemanticTokensProvider();
-  });
-
-  teardown(async () => {
-    await vscode.commands.executeCommand('workbench.action.closeAllEditors');
   });
 
   test('Parse begin and end', async () => {

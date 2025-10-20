@@ -12,12 +12,7 @@ suite('Parse Markdown', () => {
   const markdownCodeTag = ['```', '~~~'];
 
   suiteSetup(async () => {
-    await vscode.commands.executeCommand('workbench.action.closeAllEditors');
     provider = new MarkdownGoTemplateSemanticTokensProvider();
-  });
-
-  teardown(async () => {
-    await vscode.commands.executeCommand('workbench.action.closeAllEditors');
   });
 
   test('Parse go-template language', async () => {
@@ -53,6 +48,8 @@ end test
 `,
     });
     const tokens = await provider.provideDocumentSemanticTokens(doc);
+    // Reduce flakiness: ensure provider resolved before assertions
+    await new Promise((r) => setTimeout(r, 50));
     expect(tokens?.data).to.be.Uint32Array();
     // prettier-ignore
     expect(tokens?.data).to.be.equalTo([

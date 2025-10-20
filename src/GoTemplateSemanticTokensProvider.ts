@@ -1,6 +1,13 @@
 import * as vscode from 'vscode';
 import TokenType from './tokenType';
-import regex, { isCommentBegin, isEnd, isRawStringBegin, matchType, regexBegin, stringEscapeMatchList } from './match';
+import regex, {
+  isCommentBegin,
+  isEnd,
+  isRawStringBegin,
+  matchType,
+  regexBegin,
+  stringEscapeMatchList,
+} from './match';
 
 export type ParsedToken = {
   line: number;
@@ -10,13 +17,21 @@ export type ParsedToken = {
 };
 
 const enum2Keys = (e: Record<string | number, string | number>) =>
-  Object.values(e).filter(t => typeof t !== 'number') as string[];
+  Object.values(e).filter((t) => typeof t !== 'number') as string[];
 
-export const goTemplateLegend: vscode.SemanticTokensLegend = new vscode.SemanticTokensLegend(enum2Keys(TokenType));
+export const goTemplateLegend: vscode.SemanticTokensLegend = new vscode.SemanticTokensLegend(
+  enum2Keys(TokenType),
+);
 
-export default class GoTemplateSemanticTokensProvider implements vscode.DocumentSemanticTokensProvider {
-  public provideDocumentSemanticTokens(document: vscode.TextDocument): vscode.ProviderResult<vscode.SemanticTokens> {
-    const tokens = this.parseSource(document.getText(), document.eol === vscode.EndOfLine.LF ? '\n' : '\r\n');
+export default class GoTemplateSemanticTokensProvider
+  implements vscode.DocumentSemanticTokensProvider {
+  public provideDocumentSemanticTokens(
+    document: vscode.TextDocument,
+  ): vscode.ProviderResult<vscode.SemanticTokens> {
+    const tokens = this.parseSource(
+      document.getText(),
+      document.eol === vscode.EndOfLine.LF ? '\n' : '\r\n',
+    );
     const builder = new vscode.SemanticTokensBuilder();
     for (const token of tokens) {
       builder.push(token.line, token.begin, token.length, token.type);
@@ -39,7 +54,8 @@ export default class GoTemplateSemanticTokensProvider implements vscode.Document
         // Continue comment or raw string
         if (continuing !== ContinueType.notContinue) {
           const endToken = continuing === ContinueType.comment ? '*/' : '`';
-          const type = continuing === ContinueType.comment ? TokenType.comment : TokenType.rawString;
+          const type =
+            continuing === ContinueType.comment ? TokenType.comment : TokenType.rawString;
           const end = content.indexOf(endToken);
           if (end < 0) {
             temp.push({ line, begin: 0, length: content.length + eol.length, type });
@@ -56,7 +72,9 @@ export default class GoTemplateSemanticTokensProvider implements vscode.Document
           if (!match) {
             break;
           }
-          temp = [{ line, begin: match.index || 0, length: match[0].length, type: TokenType.begin }];
+          temp = [
+            { line, begin: match.index || 0, length: match[0].length, type: TokenType.begin },
+          ];
           regex.lastIndex = match.index + match[0].length;
           continue;
         }
@@ -74,7 +92,8 @@ export default class GoTemplateSemanticTokensProvider implements vscode.Document
         }
         if (continuing !== ContinueType.notContinue) {
           const endToken = continuing === ContinueType.comment ? '*/' : '`';
-          const type = continuing === ContinueType.comment ? TokenType.comment : TokenType.rawString;
+          const type =
+            continuing === ContinueType.comment ? TokenType.comment : TokenType.rawString;
           const end = content.indexOf(endToken, begin + 1);
           if (end < 0) {
             // with line break
@@ -134,7 +153,12 @@ export default class GoTemplateSemanticTokensProvider implements vscode.Document
       begin = r.begin + r.length;
     }
     if (begin < offset + content.length) {
-      originRes.push({ line, begin, length: offset + content.length - begin, type: TokenType.string });
+      originRes.push({
+        line,
+        begin,
+        length: offset + content.length - begin,
+        type: TokenType.string,
+      });
     }
     return [...res, ...originRes];
   }

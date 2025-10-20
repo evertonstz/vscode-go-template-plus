@@ -171,7 +171,8 @@
     ],
     "semanticTokenTypes": [
       {
-        "id": "goTemplate"
+        "id": "goTemplate",
+        "description": "Go Template embedded region"
       },
       {
         "id": "begin",
@@ -185,35 +186,43 @@
       },
       {
         "id": "rawString",
-        "superType": "string"
+        "superType": "string",
+        "description": "Raw string literal in Go Template"
       },
       {
         "id": "assignment",
-        "superType": "operator"
+        "superType": "operator",
+        "description": "Assignment operator in Go Template"
       },
       {
         "id": "pipe",
-        "superType": "operator"
+        "superType": "operator",
+        "description": "Pipe operator in Go Template"
       },
       {
         "id": "control",
-        "superType": "keyword"
+        "superType": "keyword",
+        "description": "Control keywords in Go Template"
       },
       {
         "id": "builtin",
-        "superType": "function"
+        "superType": "function",
+        "description": "Builtin functions in Go Template"
       },
       {
         "id": "stringEscape",
-        "superType": "string"
+        "superType": "string",
+        "description": "String escape sequence"
       },
       {
         "id": "unknownEscape",
-        "superType": "string"
+        "superType": "string",
+        "description": "Unknown or invalid escape sequence"
       },
       {
         "id": "placeholder",
-        "superType": "string"
+        "superType": "string",
+        "description": "Printf-style placeholder"
       }
     ],
     "configuration": {

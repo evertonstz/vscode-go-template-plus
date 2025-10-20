@@ -47,15 +47,17 @@ Advanced Go Template syntax highlighting with **base language detection** and **
 
 ### New Features (Go Template+)
 
-- **Base Language Detection & Merged Highlighting**: Automatically detects the underlying language (HTML, YAML, JSON, Markdown, Shell, SQL, Plaintext) and provides high-fidelity syntax highlighting for both Go template constructs and the base language simultaneously.
+- **Merged Highlighting**: High-fidelity syntax highlighting for **both** Go template constructs and the underlying base language (HTML, YAML, JSON, Markdown, Shell, SQL, Plaintext) simultaneously, instead of just template syntax.
 
-- **Meta Directive Support**: Explicitly declare the base language with a top-of-file directive:
+- **Meta Directive for Base Language**: Explicitly declare the base language with a top-of-file directive:
   ```go
   {{/*meta: base=html*/}}
   <!DOCTYPE html>
   <html>...</html>
   ```
-  Supported on line 1, or line 2 if line 1 is a shebang (`#!/bin/bash`).
+  Supported on line 1, or line 2 if line 1 is a shebang (`#!/bin/bash`). Without a directive, falls back to plaintext (template-only highlighting).
+
+  <img width="571" height="273" alt="image" src="https://github.com/user-attachments/assets/66dd0c7e-d981-464e-9cb1-2e35744c14f2" />
 
 - **Auto-Switch on Directive Detection**: Automatically switch document language mode to `go-template` when a meta directive is detected (opt-in via `go-template.autoSwitchFromDirective` setting, enabled by default).
 

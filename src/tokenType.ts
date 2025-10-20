@@ -14,6 +14,7 @@ enum TokenType {
   stringEscape,
   unknownEscape,
   placeholder,
+  number,
 }
 
 export default TokenType;

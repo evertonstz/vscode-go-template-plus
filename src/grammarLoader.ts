@@ -7,8 +7,13 @@ import { loadWASM, OnigScanner, OnigString } from 'onigasm';
 // Language ID → Scope Name → Grammar Filename mapping
 const LANGUAGE_GRAMMAR_MAP: Record<string, { scope: string; filename: string }> = {
   html: { scope: 'text.html.basic', filename: 'html.tmLanguage.json' },
+  xml: { scope: 'text.xml', filename: 'xml.tmLanguage.json' },
+  javascript: { scope: 'source.js', filename: 'javascript.tmLanguage.json' },
+  typescript: { scope: 'source.ts', filename: 'typescript.tmLanguage.json' },
   yaml: { scope: 'source.yaml', filename: 'yaml.tmLanguage.json' },
+  toml: { scope: 'source.toml', filename: 'toml.tmLanguage.json' },
   json: { scope: 'source.json', filename: 'json.tmLanguage.json' },
+  dockerfile: { scope: 'source.dockerfile', filename: 'dockerfile.tmLanguage.json' },
   markdown: { scope: 'text.html.markdown', filename: 'markdown.tmLanguage.json' },
   shellscript: { scope: 'source.shell', filename: 'shellscript.tmLanguage.json' },
   sql: { scope: 'source.sql', filename: 'sql.tmLanguage.json' },

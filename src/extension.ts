@@ -216,7 +216,9 @@ const setupAutoSwitch = (context: vscode.ExtensionContext): void => {
       return;
     }
 
-    console.log(`[AutoSwitch] Switching ${doc.fileName} to go-template (detected: ${directive.base})`);
+    console.log(
+      `[AutoSwitch] Switching ${doc.fileName} to go-template (detected: ${directive.base})`,
+    );
 
     // Switch to go-template
     vscode.languages.setTextDocumentLanguage(doc, 'go-template').then(

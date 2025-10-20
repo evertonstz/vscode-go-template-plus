@@ -316,5 +316,9 @@
         "category": "Go Template"
       }
     ]
+  },
+  "dependencies": {
+    "onigasm": "^2.2.5",
+    "vscode-textmate": "^9.2.1"
   }
 }

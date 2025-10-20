@@ -26,10 +26,14 @@ const registerProvider = (context: vscode.ExtensionContext, selector: vscode.Doc
 
   const combinedLegend = createCombinedLegend();
 
-  if (selector.length > 0) {
+  // Always register for go-template language
+  const goTemplateSelector: vscode.DocumentFilter[] = [{ language: 'go-template' }];
+  const allSelectors = [...goTemplateSelector, ...selector];
+
+  if (allSelectors.length > 0) {
     context.subscriptions.push(
       vscode.languages.registerDocumentSemanticTokensProvider(
-        selector,
+        allSelectors,
         new MergedSemanticTokensProvider(context),
         combinedLegend,
       ),

@@ -1,3 +1,8 @@
+/**
+ * Parses the meta directive from the first line of a Go template file.
+ * Format: {{/ *meta: base=html* /}} (without spaces)
+ */
+
 export interface MetaDirective {
   base?: string;
 }
@@ -25,6 +30,7 @@ export function parseMetaDirective(line: string): MetaDirective | null {
     if (key === 'base' && value) {
       directive.base = value;
     }
+    // Future: support other keys like dialect, etc.
   }
 
   return directive;

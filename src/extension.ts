@@ -66,6 +66,14 @@ export const activate = async (context: vscode.ExtensionContext): Promise<void> 
   const { languages, patterns } = getConfig();
   registerProvider(context, [...languages, ...patterns]);
 
+  // React to template style changes
+  vscode.workspace.onDidChangeConfiguration((e) => {
+    if (e.affectsConfiguration('go-template.templateStyle')) {
+      applyTemplateStyle();
+    }
+  });
+  applyTemplateStyle();
+
   vscode.workspace.onDidChangeConfiguration((e) => {
     if (!e.affectsConfiguration(CONFIG_SECTION)) {
       return;
@@ -80,4 +88,34 @@ export const activate = async (context: vscode.ExtensionContext): Promise<void> 
     const { languages, patterns } = getConfig();
     registerProvider(context, [...languages, ...patterns]);
   });
+};
+
+const applyTemplateStyle = (): void => {
+  const config = vscode.workspace.getConfiguration('go-template');
+  const style = config.get<string>('templateStyle', 'italic');
+
+  // Map to VS Code fontStyle strings
+  let fontStyle = '';
+  switch (style) {
+    case 'bold':
+      fontStyle = 'bold';
+      break;
+    case 'italic+bold':
+      fontStyle = 'italic bold';
+      break;
+    case 'none':
+      fontStyle = '';
+      break;
+    case 'italic':
+    default:
+      fontStyle = 'italic';
+  }
+
+  // Apply to current window via workbench config overrides
+  const editorConfig = vscode.workspace.getConfiguration('editor');
+  const current = editorConfig.get<any>('semanticTokenColorCustomizations') || {};
+  const allThemes = current['[*]'] || {};
+  const rules = { ...(allThemes.rules || {}), ['*.template']: { fontStyle } };
+  const next = { ...current, ['[*]']: { ...(allThemes || {}), enabled: true, rules } };
+  editorConfig.update('semanticTokenColorCustomizations', next, vscode.ConfigurationTarget.Global);
 };

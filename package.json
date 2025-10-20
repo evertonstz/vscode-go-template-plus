@@ -68,6 +68,16 @@
     "onCommand:go-template.reload"
   ],
   "contributes": {
+    "configurationDefaults": {
+      "editor.semanticTokenColorCustomizations": {
+        "[*]": {
+          "enabled": true,
+          "rules": {
+            "*.template": { "fontStyle": "italic" }
+          }
+        }
+      }
+    },
     "languages": [
       {
         "id": "go-template",
@@ -307,6 +317,18 @@
           "type": "number",
           "default": 300,
           "description": "Debounce interval (milliseconds) for status bar updates and semantic token refresh."
+        },
+        "go-template.templateStyle": {
+          "type": "string",
+          "enum": ["italic", "bold", "italic+bold", "none"],
+          "default": "italic",
+          "description": "Font style for Go template tokens to make them stand out from base language.",
+          "enumDescriptions": [
+            "Render template tokens in italic (default)",
+            "Render template tokens in bold",
+            "Render template tokens in italic and bold",
+            "No special styling for template tokens"
+          ]
         }
       }
     },

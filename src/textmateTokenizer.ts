@@ -48,6 +48,11 @@ export function tokenizeWithGrammar(text: string, grammar: IGrammar): BaseToken[
         continue;
       }
 
+      // Debug: log first few tokens to see scopes
+      if (tokens.length < 5) {
+        console.log('[TextMate] Token scopes:', token.scopes, '→ type:', semanticToken.type);
+      }
+
       tokens.push({
         line: lineNum,
         startChar: token.startIndex,

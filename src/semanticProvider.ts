@@ -41,6 +41,8 @@ export function createCombinedLegend(): vscode.SemanticTokensLegend {
     'unknownEscape',
     'placeholder',
     'number',
+    'class', // Standard type for HTML tags
+    'type', // Standard type
     'tag',
     'attribute',
     'function',
@@ -102,9 +104,11 @@ export class MergedSemanticTokensProvider implements vscode.DocumentSemanticToke
 
     // Detect base language
     const detection = detectBaseLanguage(text, this.directiveEnabled);
+    console.log('[MergedProvider] Detected base language:', detection);
 
     // Extract template spans
     const spans = extractTemplateSpans(text);
+    console.log('[MergedProvider] Template spans:', spans.length);
 
     // Build virtual buffer
     const virtualBuffer = buildVirtualBuffer(text, spans);
@@ -112,17 +116,26 @@ export class MergedSemanticTokensProvider implements vscode.DocumentSemanticToke
     // Tokenize base language (if not plaintext)
     let baseTokens: BaseToken[] = [];
     if (detection.languageId !== 'plaintext') {
+      console.log('[MergedProvider] Loading grammar for:', detection.languageId);
       const grammar = await loadGrammarForLanguage(detection.languageId, this.context);
+      console.log('[MergedProvider] Grammar loaded:', grammar ? 'YES' : 'NO');
       if (grammar) {
         baseTokens = tokenizeWithGrammar(virtualBuffer, grammar);
+        console.log('[MergedProvider] Base tokens:', baseTokens.length);
       }
     }
 
     // Tokenize template spans
     const templateTokens = this.tokenizeTemplateSpans(text, spans);
+    console.log('[MergedProvider] Template tokens:', templateTokens.length);
 
     // Merge tokens
-    return this.mergeTokens(baseTokens, templateTokens);
+    const result = this.mergeTokens(baseTokens, templateTokens);
+    console.log('[MergedProvider] Merged tokens data length:', result.data.length);
+    console.log('[MergedProvider] First 50 data values:', Array.from(result.data.slice(0, 50)));
+    console.log('[MergedProvider] Legend types:', this.legend.tokenTypes);
+    console.log('[MergedProvider] Legend modifiers:', this.legend.tokenModifiers);
+    return result;
   }
 
   private tokenizeTemplateSpans(text: string, spans: TemplateSpan[]): ParsedToken[] {

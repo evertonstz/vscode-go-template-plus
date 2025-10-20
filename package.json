@@ -132,6 +132,7 @@
     ],
     "semanticTokenScopes": [
       {
+        "language": "go-template",
         "scopes": {
           "goTemplate": [
             "source.go-template"

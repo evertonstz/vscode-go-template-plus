@@ -65,7 +65,11 @@
   },
   "activationEvents": [
     "onStartupFinished",
-    "onCommand:go-template.reload"
+    "onCommand:go-template.reload",
+    "onCommand:go-template.associateTemplates",
+    "onCommand:go-template.removeTemplateAssociations",
+    "onCommand:go-template.associateTemplatesGlobal",
+    "onCommand:go-template.removeTemplateAssociationsGlobal"
   ],
   "contributes": {
     "configurationDefaults": {
@@ -329,6 +333,11 @@
             "Render template tokens in italic and bold",
             "No special styling for template tokens"
           ]
+        },
+        "go-template.autoSwitchFromDirective": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically switch document language to go-template when a {{/*meta: ...*/}} directive is detected."
         }
       }
     },
@@ -336,6 +345,26 @@
       {
         "command": "go-template.reload",
         "title": "Reload Go Template Syntax Highlight Support",
+        "category": "Go Template"
+      },
+      {
+        "command": "go-template.associateTemplates",
+        "title": "Associate *.tmpl/*.tpl with go-template (Workspace)",
+        "category": "Go Template"
+      },
+      {
+        "command": "go-template.removeTemplateAssociations",
+        "title": "Remove go-template associations for *.tmpl/*.tpl (Workspace)",
+        "category": "Go Template"
+      },
+      {
+        "command": "go-template.associateTemplatesGlobal",
+        "title": "Associate *.tmpl/*.tpl with go-template (Global)",
+        "category": "Go Template"
+      },
+      {
+        "command": "go-template.removeTemplateAssociationsGlobal",
+        "title": "Remove go-template associations for *.tmpl/*.tpl (Global)",
         "category": "Go Template"
       }
     ]

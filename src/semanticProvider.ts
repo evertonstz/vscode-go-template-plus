@@ -5,7 +5,13 @@
 import * as vscode from 'vscode';
 import { detectBaseLanguage } from './detectBase';
 import { loadGrammarForLanguage } from './grammarLoader';
-import { buildVirtualBuffer, extractTemplateSpans, TemplateSpan } from './templateSpans';
+import {
+  buildLineOffsets,
+  buildVirtualBuffer,
+  extractTemplateSpans,
+  lineColumnToAbsolute,
+  TemplateSpan,
+} from './templateSpans';
 import { BaseToken, tokenizeWithGrammar } from './textmateTokenizer';
 import GoTemplateSemanticTokensProvider, { ParsedToken } from './GoTemplateSemanticTokensProvider';
 
@@ -104,11 +110,12 @@ export class MergedSemanticTokensProvider implements vscode.DocumentSemanticToke
 
     // Detect base language
     const detection = detectBaseLanguage(text, this.directiveEnabled);
-    console.log('[MergedProvider] Detected base language:', detection);
+
+    // Precompute line offsets for fast position mapping
+    const lineOffsets = buildLineOffsets(text);
 
     // Extract template spans
     const spans = extractTemplateSpans(text);
-    console.log('[MergedProvider] Template spans:', spans.length);
 
     // Build virtual buffer
     const virtualBuffer = buildVirtualBuffer(text, spans);
@@ -116,42 +123,32 @@ export class MergedSemanticTokensProvider implements vscode.DocumentSemanticToke
     // Tokenize base language (if not plaintext)
     let baseTokens: BaseToken[] = [];
     if (detection.languageId !== 'plaintext') {
-      console.log('[MergedProvider] Loading grammar for:', detection.languageId);
       const grammar = await loadGrammarForLanguage(detection.languageId, this.context);
-      console.log('[MergedProvider] Grammar loaded:', grammar ? 'YES' : 'NO');
       if (grammar) {
         baseTokens = tokenizeWithGrammar(virtualBuffer, grammar);
-        console.log('[MergedProvider] Base tokens:', baseTokens.length);
       }
     }
 
     // Tokenize template spans
-    const templateTokens = this.tokenizeTemplateSpans(text, spans);
-    console.log('[MergedProvider] Template tokens:', templateTokens.length);
+    const templateTokens = this.tokenizeTemplateSpans(text, spans, lineOffsets);
 
     // Merge tokens
-    const result = this.mergeTokens(baseTokens, templateTokens);
-    console.log('[MergedProvider] Merged tokens data length:', result.data.length);
-    console.log('[MergedProvider] First 50 data values:', Array.from(result.data.slice(0, 50)));
-    console.log('[MergedProvider] Legend types:', this.legend.tokenTypes);
-    console.log('[MergedProvider] Legend modifiers:', this.legend.tokenModifiers);
-    return result;
+    return this.mergeTokens(baseTokens, templateTokens);
   }
 
-  private tokenizeTemplateSpans(text: string, spans: TemplateSpan[]): ParsedToken[] {
+  private tokenizeTemplateSpans(
+    text: string,
+    spans: TemplateSpan[],
+    lineOffsets: number[],
+  ): ParsedToken[] {
     const eol = text.includes('\r\n') ? '\r\n' : '\n';
     const allTemplateTokens = this.templateProvider['parseSource'](text, eol);
 
     // Filter to only tokens inside template spans
     const result: ParsedToken[] = [];
     for (const token of allTemplateTokens) {
-      // Convert line/begin to absolute offset
-      const lines = text.split(eol);
-      let absoluteOffset = 0;
-      for (let i = 0; i < token.line; i++) {
-        absoluteOffset += lines[i].length + eol.length;
-      }
-      absoluteOffset += token.begin;
+      // Convert line/begin to absolute offset using precomputed offsets
+      const absoluteOffset = lineColumnToAbsolute(lineOffsets, token.line, token.begin);
 
       // Check if inside a template span
       const inSpan = spans.some(
@@ -172,57 +169,37 @@ export class MergedSemanticTokensProvider implements vscode.DocumentSemanticToke
   ): vscode.SemanticTokens {
     const builder = new vscode.SemanticTokensBuilder(this.legend);
 
-    // Convert template tokens to common format with 'template' modifier
+    // Precompute modifier bits
     const templateModifierBit = 1 << this.legend.tokenModifiers.indexOf('template');
     const baseModifierBit = 1 << this.legend.tokenModifiers.indexOf('base');
 
-    // Merge and sort all tokens by line, then column
-    interface MergedToken {
-      line: number;
-      startChar: number;
-      length: number;
-      typeIndex: number;
-      modifierBits: number;
-    }
+    // Two-pointer merge (both arrays are already sorted by line, then char)
+    let i = 0; // template tokens index
+    let j = 0; // base tokens index
 
-    const allTokens: MergedToken[] = [];
+    while (i < templateTokens.length || j < baseTokens.length) {
+      // Determine which token comes first
+      const useTemplate =
+        j >= baseTokens.length ||
+        (i < templateTokens.length &&
+          (templateTokens[i].line < baseTokens[j].line ||
+            (templateTokens[i].line === baseTokens[j].line &&
+              templateTokens[i].begin <= baseTokens[j].startChar)));
 
-    // Add template tokens
-    for (const token of templateTokens) {
-      allTokens.push({
-        line: token.line,
-        startChar: token.begin,
-        length: token.length,
-        typeIndex: token.type,
-        modifierBits: templateModifierBit,
-      });
-    }
-
-    // Add base tokens
-    for (const token of baseTokens) {
-      const typeIndex = this.legend.tokenTypes.indexOf(token.type);
-      if (typeIndex >= 0) {
-        allTokens.push({
-          line: token.line,
-          startChar: token.startChar,
-          length: token.length,
-          typeIndex,
-          modifierBits: baseModifierBit,
-        });
+      if (useTemplate) {
+        // Push template token
+        const token = templateTokens[i];
+        builder.push(token.line, token.begin, token.length, token.type, templateModifierBit);
+        i++;
+      } else {
+        // Push base token
+        const token = baseTokens[j];
+        const typeIndex = this.legend.tokenTypes.indexOf(token.type);
+        if (typeIndex >= 0) {
+          builder.push(token.line, token.startChar, token.length, typeIndex, baseModifierBit);
+        }
+        j++;
       }
-    }
-
-    // Sort by line, then char
-    allTokens.sort((a, b) => {
-      if (a.line !== b.line) {
-        return a.line - b.line;
-      }
-      return a.startChar - b.startChar;
-    });
-
-    // Build semantic tokens
-    for (const token of allTokens) {
-      builder.push(token.line, token.startChar, token.length, token.typeIndex, token.modifierBits);
     }
 
     return builder.build();
